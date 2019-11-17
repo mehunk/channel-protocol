@@ -1,0 +1,24 @@
+{
+  "name": "@channel-protocol/cmcc",
+  "private": true,
+  "version": "0.8.0",
+  "main": "lib/index.js",
+  "author": "Wei Qiang<mehunk@163.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mehunk/channel-protocol.git"
+  },
+  "typings": "lib/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "npm run clean && tsc"
+  },
+  "dependencies": {
+    "@china-carrier-iot-sdk/cmcc": "^0.8.0",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.0"
+  }
+}

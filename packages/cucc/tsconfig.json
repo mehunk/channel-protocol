@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig",
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "outDir": "lib"
+  },
+  "files": [
+    "../../types/global.d.ts"
+  ]
+}

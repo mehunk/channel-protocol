@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "lib": [
+      "es6"
+    ],
+    "target": "es6",
+    "importHelpers": true,
+    "declaration": true,
+    "stripInternal": true,
+    "pretty": true
+  },
+  "include": [
+    "types/global.d.ts"
+  ]
+}
