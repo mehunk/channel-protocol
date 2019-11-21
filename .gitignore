@@ -196,6 +196,7 @@ Temporary Items
 
 # IDE
 .idea
+.vscode
 
 # 配置文件
 sample.*

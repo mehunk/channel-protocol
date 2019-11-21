@@ -1,9 +1,10 @@
 import { ChannelProtocol } from '../src';
-import { params, iccid } from './sample';
+import { options, customOptions, iccid, redis } from './sample';
 
-const cmccChannelProtocol = new ChannelProtocol(params.appId, params.password, params.rootEndpoint);
+const cmccChannelProtocol = new ChannelProtocol(options, customOptions);
 
 cmccChannelProtocol
   .getStatus(iccid)
   .then(res => console.log(res))
-  .catch(err => console.error(err));
+  .catch(err => console.error(err))
+  .finally(() => redis.disconnect());

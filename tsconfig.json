@@ -15,8 +15,5 @@
     "declaration": true,
     "stripInternal": true,
     "pretty": true
-  },
-  "include": [
-    "types/global.d.ts"
-  ]
+  }
 }

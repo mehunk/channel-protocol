@@ -12,6 +12,7 @@
   },
   "author": "Wei Qiang<mehunk@163.com>",
   "devDependencies": {
+    "@types/ioredis": "^4.0.19",
     "@types/node": "^12.12.7",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",

@@ -1,5 +1,6 @@
-import { CmccIotClient, MobileNoType, OperationType, Options, Status as SDKStatus } from '@china-carrier-iot-sdk/cmcc';
+import { CmccIotClient, MobileNoType, OperationType, Options, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cmcc';
 
+import { Status, ChannelProtocol } from './typings/global';
 import config from './config'
 
 const statusMap = {
@@ -15,13 +16,8 @@ const statusMap = {
 class CmccChannelProtocol implements ChannelProtocol {
   private readonly client: CmccIotClient;
 
-  constructor(appId: string, password: string, rootEndpoint: string) {
-    const options: Options = {
-      appId,
-      password,
-      rootEndpoint
-    };
-    this.client = new CmccIotClient(options);
+  constructor(options: Options, customOptions: CustomOptions = {}) {
+    this.client = new CmccIotClient(options, customOptions);
   }
 
   public async getStatus(iccid: string): Promise<Status> {
