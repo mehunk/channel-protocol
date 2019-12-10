@@ -1,7 +1,7 @@
 {
   "name": "@channel-protocol/ctcc",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.9.0",
   "main": "lib/index.js",
   "author": "Wei Qiang<mehunk@163.com>",
   "repository": {
@@ -15,7 +15,7 @@
     "build": "npm run clean && tsc"
   },
   "dependencies": {
-    "@china-carrier-iot-sdk/ctcc": "^0.8.2",
+    "@china-carrier-iot-sdk/ctcc": "^0.9.1",
     "moment": "^2.24.0",
     "tslib": "^1.10.0"
   },

@@ -10,7 +10,7 @@
     "lib": [
       "es6"
     ],
-    "target": "es6",
+    "target": "es2019",
     "importHelpers": true,
     "declaration": true,
     "stripInternal": true,

@@ -34,7 +34,7 @@ class CmccChannelProtocol implements ChannelProtocol {
     await this.client.setStatus(MobileNoType.iccid, iccid, OperationType.Inventory2Activated);
   }
 
-  public async pause(iccid: string): Promise<void> {
+  public async deactivate(iccid: string): Promise<void> {
     await this.client.setStatus(MobileNoType.iccid, iccid, OperationType.Activated2Deactivated);
   }
 

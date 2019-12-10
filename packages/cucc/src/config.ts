@@ -1,6 +1,6 @@
 export default {
   name: '中国联通物联网基地',
-  className: 'CuccChannelProtocol',
+  alias: 'CuccChannelProtocol',
   params: [
     {
       name: '用户名',

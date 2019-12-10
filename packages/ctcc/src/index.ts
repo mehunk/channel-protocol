@@ -1,7 +1,8 @@
 import * as moment from 'moment';
 import {
   CtccIotClient,
-  Options,
+  Options as SDKOptions,
+  CustomOptions,
   RestClientMobileNoType,
   SoapClientMobileNoType,
   Status as SDKStatus,
@@ -9,36 +10,37 @@ import {
   OperationType
 } from '@china-carrier-iot-sdk/ctcc';
 
+import { Status, ChannelProtocol, Options } from './typings';
 import config from './config';
 
 const statusMap = {
-  [SDKStatus.Deactivated]: Status.Inventory, // 暂时将失活状态定义为库存期
+  [SDKStatus.Deactivated]: Status.Deactivated,
   [SDKStatus.Active]: Status.Activated,
-  [SDKStatus.Pause]: Status.Deactivated,
+  [SDKStatus.Pause]: Status.Paused,
   [SDKStatus.Terminated]: Status.Retired // 还能挽救
 };
 
 class CtccChannelProtocol implements ChannelProtocol {
+  private readonly options: SDKOptions;
   private readonly client: CtccIotClient;
 
   constructor(
-    soapUsername: string,
-    soapPassword: string,
-    restUsername: string,
-    restPassword: string
+    options: Options,
+    private customOptions: CustomOptions = {}
   ) {
-    const options: Options = {
+    this.options = {
       soap: {
-        username: soapUsername,
-        password: soapPassword
+        username: options.soapUsername,
+        password: options.soapPassword,
+        rootEndpoint: options.soapRootEndpoint
       },
       rest: {
-        username: restUsername,
-        password: restPassword
+        username: options.restUsername,
+        password: options.restPassword,
+        rootEndpoint: options.restRootEndpoint
       }
     };
-    this.client = new CtccIotClient(options);
-    this.client.init();
+    this.client = new CtccIotClient(this.options, this.customOptions);
   }
 
   public async getStatus(iccid: string): Promise<Status> {
@@ -64,7 +66,7 @@ class CtccChannelProtocol implements ChannelProtocol {
     await this.client.setStatus(SoapClientMobileNoType.iccid, iccid, OperationType.Activate);
   }
 
-  public async pause(iccid: string): Promise<void> {
+  public async deactivate(iccid: string): Promise<void> {
     await this.client.setStatus(SoapClientMobileNoType.iccid, iccid, OperationType.Pause);
   }
 

@@ -15,7 +15,7 @@
     "build": "npm run clean && tsc"
   },
   "dependencies": {
-    "@china-carrier-iot-sdk/cmcc": "^0.9.1",
+    "@china-carrier-iot-sdk/cmcc": "^0.9.3",
     "tslib": "^1.10.0"
   },
   "devDependencies": {

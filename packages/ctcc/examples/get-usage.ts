@@ -6,7 +6,7 @@ const ctccChannelProtocol = new ChannelProtocol(
   customOptions
 );
 
- ctccChannelProtocol.getStatus(iccid)
+ctccChannelProtocol.getUsage(iccid)
   .then(res => console.log(res))
   .catch(err => console.error(err))
   .finally(() => redis.disconnect());

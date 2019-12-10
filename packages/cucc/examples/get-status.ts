@@ -1,7 +1,7 @@
 import { ChannelProtocol } from '../src';
-import { params, iccid } from './sample';
+import { options, iccid, customOptions } from './sample';
 
-const cuccChannelProtocal = new ChannelProtocol(params.username, params.key);
+const cuccChannelProtocal = new ChannelProtocol(options, customOptions);
 
 cuccChannelProtocal
   .getStatus(iccid)

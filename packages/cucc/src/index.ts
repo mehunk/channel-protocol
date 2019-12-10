@@ -1,6 +1,7 @@
-import { CuccIotClient, Options, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
+import { CuccIotClient, Options, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
 
 import config from './config';
+import { Status, ChannelProtocol } from './typings/global';
 
 const statusMap = {
   [SDKStatus.TestReady]: Status.TestReady,
@@ -17,14 +18,10 @@ export class CuccChannelProtocol implements ChannelProtocol {
   private readonly client: CuccIotClient;
 
   constructor(
-    username: string,
-    key: string
+    private options: Options,
+    private customOptions: CustomOptions = {}
   ) {
-    const options: Options = {
-      username,
-      key
-    };
-    this.client = new CuccIotClient(options);
+    this.client = new CuccIotClient(this.options, this.customOptions);
   }
 
   public async getStatus(iccid: string): Promise<Status> {
@@ -43,7 +40,7 @@ export class CuccChannelProtocol implements ChannelProtocol {
     });
   }
 
-  public async pause(iccid: string): Promise<void> {
+  public async deactivate(iccid: string): Promise<void> {
     await this.client.setDetail(iccid, {
       status: SDKStatus.Deactivated
     });

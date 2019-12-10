@@ -5,8 +5,5 @@
   ],
   "compilerOptions": {
     "outDir": "lib"
-  },
-  "files": [
-    "../../types/global.d.ts"
-  ]
+  }
 }

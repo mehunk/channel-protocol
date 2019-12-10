@@ -1,5 +1,6 @@
 export default {
   name: '中国移动物联网基地',
+  alias: 'CmccChannelProtocol',
   params: [
     {
       name: '应用 id',
