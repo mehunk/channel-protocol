@@ -7,6 +7,7 @@
 首先在本地安装依赖包。
 
 ```shell script
+$ yarn # 或者是 npm i
 $ lerna bootstrap
 ```
 
@@ -22,8 +23,15 @@ $ lerna bootstrap
 
 ### 打包
 
-进入到 `packages/` 要打包的目录下，运行以下命令。
+首先在本地安装依赖包。
 
 ```shell script
-$ npm run build
+$ yarn # 或者是 npm i
+$ lerna bootstrap
+```
+
+在根目录下执行。
+
+```shell script
+$ sh build.sh
 ```

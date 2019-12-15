@@ -200,3 +200,10 @@ sample.*
 
 # 编译目录
 lib
+
+# 依赖管理工具版本锁
+yarn.lock
+package-lock.json
+
+# 打包目录
+dist
