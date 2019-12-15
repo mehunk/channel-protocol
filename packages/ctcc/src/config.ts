@@ -1,5 +1,6 @@
 export default {
   name: '中国电信物联网基地',
+  carrier: '电信',
   alias: 'CtccChannelProtocol',
   params: [
     {

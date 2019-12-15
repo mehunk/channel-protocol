@@ -1,5 +1,6 @@
 export default {
   name: '中国移动物联网基地',
+  carrier: '移动',
   alias: 'CmccChannelProtocol',
   params: [
     {

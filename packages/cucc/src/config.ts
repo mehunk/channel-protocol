@@ -1,5 +1,6 @@
 export default {
   name: '中国联通物联网基地',
+  carrier: '联通',
   alias: 'CuccChannelProtocol',
   params: [
     {
