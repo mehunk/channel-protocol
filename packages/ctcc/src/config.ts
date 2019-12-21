@@ -15,7 +15,7 @@ export default {
     },
     {
       name: 'SOAP 接口根端点',
-      alias: 'rootEndpoint',
+      alias: 'soapRootEndpoint',
       type: 'text',
       default: 'https://global.ct10649.com/dcpapi'
     },
@@ -31,7 +31,7 @@ export default {
     },
     {
       name: 'REST 接口根端点',
-      alias: 'rootEndpoint',
+      alias: 'restRootEndpoint',
       type: 'text',
       default: 'https://si.global.ct10649.com/api/dcpsiapi'
     }
