@@ -27,7 +27,7 @@ class CmccChannelProtocol implements ChannelProtocol {
 
   public async getUsage(iccid: string): Promise<number> {
     const res = await this.client.getUsage(MobileNoType.iccid, iccid);
-    return +res.dataAmount;
+    return Math.ceil(+res.dataAmount); // dataAmount 属性可能是小数，目前协议只要整数
   }
 
   public async activate(iccid: string): Promise<void> {
