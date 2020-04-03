@@ -32,7 +32,8 @@ export default {
     {
       name: 'CMP 接口根端点',
       alias: 'cmpRootEndpoint',
-      type: 'text'
+      type: 'text',
+      default: 'https://gwapi.10646.cn/api'
     }
   ],
   supportSpeedLimit: false
