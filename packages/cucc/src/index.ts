@@ -1,7 +1,7 @@
-import { CuccIotClient, Options, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
+import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
 
 import config from './config';
-import { Status, ChannelProtocol } from './typings/global';
+import { Status, ChannelProtocol, Options } from './typings';
 
 const statusMap = {
   [SDKStatus.TestReady]: Status.TestReady,
@@ -15,12 +15,25 @@ const statusMap = {
 };
 
 export class CuccChannelProtocol implements ChannelProtocol {
+  private readonly options: SDKOptions;
   private readonly client: CuccIotClient;
 
   constructor(
-    private options: Options,
+    options: Options,
     private customOptions: CustomOptions = {}
   ) {
+    this.options = {
+      jasper: {
+        username: options.jasperUsername,
+        key: options.jasperKey,
+        rootEndpoint: options.jasperRootEndpoint
+      },
+      cmp: {
+        appId: options.cmpAppId,
+        appSecret: options.cmpAppSecret,
+        rootEndpoint: options.cmpRootEndpoint
+      }
+    }
     this.client = new CuccIotClient(this.options, this.customOptions);
   }
 
@@ -50,6 +63,11 @@ export class CuccChannelProtocol implements ChannelProtocol {
     await this.client.setDetail(iccid, {
       status: SDKStatus.Activated
     });
+  }
+
+  public async getRealNameStatus(iccid: string): Promise<boolean> {
+    const res = await this.client.getRealNameStatus(iccid);
+    return res.rspcode === '0001'
   }
 }
 
