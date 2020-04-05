@@ -33,7 +33,7 @@ export class CuccChannelProtocol implements ChannelProtocol {
         appSecret: options.cmpAppSecret,
         rootEndpoint: options.cmpRootEndpoint
       }
-    }
+    };
     this.client = new CuccIotClient(this.options, this.customOptions);
   }
 
@@ -44,7 +44,7 @@ export class CuccChannelProtocol implements ChannelProtocol {
 
   public async getUsage(iccid: string): Promise<number> {
     const res = await this.client.getUsage(iccid);
-    return res.ctdDataUsage; // TODO 单位是字节
+    return Math.ceil(res.ctdDataUsage  / 1024); // bytes to KB
   }
 
   public async activate(iccid: string): Promise<void> {
@@ -67,7 +67,13 @@ export class CuccChannelProtocol implements ChannelProtocol {
 
   public async getRealNameStatus(iccid: string): Promise<boolean> {
     const res = await this.client.getRealNameStatus(iccid);
-    return res.rspcode === '0001'
+    if (res.rspcode === '0001') {
+      return true
+    } else if (res.rspcode === '0000') {
+      return false
+    } else {
+      throw new Error(`查询实名状态失败！结果码：${res.rspcode}，结果说明：${res.rspdesc}！`);
+    }
   }
 }
 
