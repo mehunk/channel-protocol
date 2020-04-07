@@ -10,7 +10,7 @@ export default {
     },
     {
       name: 'Jasper Key',
-      alias: 'JasperKey',
+      alias: 'jasperKey',
       type: 'text'
     },
     {
