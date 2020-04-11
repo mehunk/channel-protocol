@@ -1,10 +1,25 @@
 import { strict as assert } from 'assert';
 import { Redis } from 'ioredis';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
-import { CmccIotClient, MobileNoType, OperationType, Options, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cmcc';
+import {
+  CmccIotClient,
+  CustomOptions,
+  MobileNoType,
+  OperationType,
+  Options,
+  Status as SDKStatus
+} from '@china-carrier-iot-sdk/cmcc';
 
-import { Status, ChannelProtocol } from './typings/global';
-import config from './config'
+import {
+  ChannelProtocol,
+  GetStatusChangeHistoryResponse,
+  GetCurrentPositionCityCodeResponse,
+  GetCurrentPositionWgs84Response,
+  GetLastPositionCityCodeResponse,
+  GetLastPositionWgs84Response,
+  Status
+} from './typings';
+import config from './config';
 
 const statusMap = {
   [SDKStatus.TestReady]: Status.TestReady,
@@ -72,6 +87,47 @@ class CmccChannelProtocol implements ChannelProtocol {
     } catch (e) {
       throw new Error('30 分钟之内不允许再次调用改变生命周期接口！');
     }
+  }
+
+  public async getStatusChangeHistory(iccid: string): Promise<GetStatusChangeHistoryResponse> {
+    const res = await this.client.getStatusChangeHistory(MobileNoType.iccid, iccid);
+    return res.changeHistoryList.map(item => ({
+      time: item.changeDate,
+      oldStatus: statusMap[item.descStatus],
+      newStatus: statusMap[item.targetStatus]
+    }));
+  }
+
+  public async getCurrentPositionCityCode(iccid: string): Promise<GetCurrentPositionCityCodeResponse> {
+    const res = await this.client.getCurrentPositionCityCode(MobileNoType.iccid, iccid);
+    return {
+      cityCode: res.cityCode
+    };
+  }
+
+  public async getCurrentPositionWgs84(iccid: string): Promise<GetCurrentPositionWgs84Response> {
+    const res = await this.client.getCurrentPositionWgs84(MobileNoType.iccid, iccid);
+    return {
+      longitude: res.lon,
+      latitude: res.lat
+    };
+  }
+
+  public async getLastPositionCityCode(iccid: string): Promise<GetLastPositionCityCodeResponse> {
+    const res = await this.client.getLastPositionCityCode(MobileNoType.iccid, iccid);
+    return {
+      time: res.onLineTime,
+      cityCode: res.cityCode
+    };
+  }
+
+  public async getLastPositionWgs84(iccid: string): Promise<GetLastPositionWgs84Response> {
+    const res = await this.client.getLastPositionWgs84(MobileNoType.iccid, iccid);
+    return {
+      time: res.lastTime,
+      longitude: res.lastLon,
+      latitude: res.lastLat
+    };
   }
 }
 
