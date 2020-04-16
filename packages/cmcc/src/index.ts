@@ -36,7 +36,7 @@ class CmccChannelProtocol implements ChannelProtocol {
   private readonly client: CmccIotClient;
   private readonly operationRateLimiter: RateLimiterRedis;
 
-  constructor(options: Options & { redis: Redis }, customOptions: CustomOptions = {}) {
+  constructor(options: Options, customOptions: CustomOptions = {}) {
     assert(options.redis, '参数中缺少 redis 实例！')
     this.redis = options.redis;
     this.client = new CmccIotClient(options, customOptions);
