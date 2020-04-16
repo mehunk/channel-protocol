@@ -8,8 +8,8 @@ import {
 } from './response';
 
 export interface MobileNoObj {
-  iccid: string;
-  msisdn: string;
+  iccid?: string;
+  msisdn?: string;
 }
 
 export interface ChannelProtocol {
