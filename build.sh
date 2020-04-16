@@ -33,3 +33,14 @@ do
     cd $base_dir/packages
   fi
 done
+
+cd $base_dir/dist
+for dir in *
+do
+  if test -d $dir # 如果是目录
+  then
+    # 在 dist 目录下建立名字相同的目录
+    cd $dir && yarn
+    cd $base_dir/dist
+  fi
+done
