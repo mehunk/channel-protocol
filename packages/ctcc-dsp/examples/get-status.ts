@@ -1,13 +1,12 @@
 import { ChannelProtocol } from '../src';
-import { options, iccid, customOptions, redis } from './sample';
+import { options, mobileNoObj, customOptions, redis } from './sample';
 
-const ctccChannelProtocol = new ChannelProtocol(
+const ctccDspChannelProtocol = new ChannelProtocol(
   options,
   customOptions
 );
 
- ctccChannelProtocol.getStatus(iccid)
+ctccDspChannelProtocol.getStatus(mobileNoObj)
   .then(res => console.log(res))
   .catch(err => console.error(err))
   .finally(() => redis.disconnect());
-

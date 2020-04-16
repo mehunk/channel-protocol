@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import {
-  CtccIotClient,
+  CtccDspIotClient,
   Options as SDKOptions,
   CustomOptions,
   RestClientMobileNoType,
@@ -8,9 +8,9 @@ import {
   Status as SDKStatus,
   GetUsageType,
   OperationType
-} from '@china-carrier-iot-sdk/ctcc';
+} from '@china-carrier-iot-sdk/ctcc-dsp';
 
-import { Status, ChannelProtocol, Options } from './typings';
+import { Status, ChannelProtocol, Options, MobileNoObj } from './typings';
 import config from './config';
 
 const statusMap = {
@@ -20,9 +20,9 @@ const statusMap = {
   [SDKStatus.Terminated]: Status.Retired // 还能挽救
 };
 
-class CtccChannelProtocol implements ChannelProtocol {
+class CtccDspChannelProtocol implements ChannelProtocol {
   private readonly options: SDKOptions;
-  private readonly client: CtccIotClient;
+  private readonly client: CtccDspIotClient;
 
   constructor(
     options: Options,
@@ -40,18 +40,18 @@ class CtccChannelProtocol implements ChannelProtocol {
         rootEndpoint: options.restRootEndpoint
       }
     };
-    this.client = new CtccIotClient(this.options, this.customOptions);
+    this.client = new CtccDspIotClient(this.options, this.customOptions);
   }
 
-  public async getStatus(iccid: string): Promise<Status> {
-    const res = await this.client.getDetail(SoapClientMobileNoType.iccid, iccid);
+  public async getStatus(mobileNoObj: MobileNoObj): Promise<Status> {
+    const res = await this.client.getDetail(SoapClientMobileNoType.iccid, mobileNoObj.iccid);
     return statusMap[res.simSubscriptionStatus];
   }
 
-  public async getUsage(iccid: string): Promise<number> {
+  public async getUsage(mobileNoObj: MobileNoObj): Promise<number> {
     const res = await this.client.getUsage(
       RestClientMobileNoType.iccid,
-      iccid,
+      mobileNoObj.iccid,
       moment().format('YYYY-MM'),
       '1',
       moment()
@@ -59,23 +59,23 @@ class CtccChannelProtocol implements ChannelProtocol {
         .toString(),
       [GetUsageType.GPRS]
     );
-    return res.totalVolumnGPRS;
+    return Math.ceil(res.totalVolumnGPRS / 1024);
   }
 
-  public async activate(iccid: string): Promise<void> {
-    await this.client.setStatus(SoapClientMobileNoType.iccid, iccid, OperationType.Activate);
+  public async activate(mobileNoObj: MobileNoObj): Promise<void> {
+    await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
   }
 
-  public async deactivate(iccid: string): Promise<void> {
-    await this.client.setStatus(SoapClientMobileNoType.iccid, iccid, OperationType.Pause);
+  public async deactivate(mobileNoObj: MobileNoObj): Promise<void> {
+    await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Pause);
   }
 
-  public async reactivate(iccid: string): Promise<void> {
-    await this.client.setStatus(SoapClientMobileNoType.iccid, iccid, OperationType.Activate);
+  public async reactivate(mobileNoObj: MobileNoObj): Promise<void> {
+    await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
   }
 }
 
 export {
-  CtccChannelProtocol as ChannelProtocol,
+  CtccDspChannelProtocol as ChannelProtocol,
   config
 }

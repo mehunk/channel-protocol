@@ -7,22 +7,28 @@ export enum Status {
   Replaced = 'replaced', // 已更换。在某些情况下，您可能需要将一个 SIM 卡更换为另一个 SIM 卡。新的 SIM 卡将继承原来的 SIM 卡的信息，而原来的 SIM 卡将变为已更换状态。您必须向运营商申请这种更改。
   Retired = 'retired', // 已失效。已失效状态不允许设备建立数据连接。通常不考虑对处于此状态的设备进行计费，除非适用某种承诺。通常，已失效状态的设备永久处于非活动状态并且将变为已清除状态，以便将其从网络中移除。如有必要，用户可以将已失效设备变更为其他 SIM 卡状态。
   TestReady = 'testReady', // 可测试。可测试状态允许设备可以建立数据连接并免费使用某些通信服务。此状态的 SIM 卡处于非计费状态。一旦设备达到为任何服务(流量、短信、通话或其他服务)配置的上限，该设备就会转换为目标状态，而无法再免费使用任何服务的测试通信。通常，超过可测试阈值的 SIM 卡的目标状态为可激活或库存。
-  Paused = 'paused' // 停机保号
+  Paused = 'paused', // 停机保号
+  NotRealNameDeactivated = 'notRealNameDeactivated' // 非实名停机，电信 CMP 平台状态
+}
+
+export interface MobileNoObj {
+  iccid: string;
+  msisdn: string;
 }
 
 export interface ChannelProtocol {
   // 查询设备状态
-  getStatus (iccid: string): Promise<Status>;
+  getStatus (mobileNoObj: MobileNoObj): Promise<Status>;
 
   // 查询设备流量用量
-  getUsage (iccid: string): Promise<number>;
+  getUsage (mobileNoObj: MobileNoObj): Promise<number>;
 
   // 激活设备
-  activate (iccid: string): Promise<void>;
+  activate (mobileNoObj: MobileNoObj): Promise<void>;
 
   // 设备停机
-  deactivate (iccid: string): Promise<void>;
+  deactivate (mobileNoObj: MobileNoObj): Promise<void>;
 
   // 重新激活设备
-  reactivate (iccid: string): Promise<void>;
+  reactivate (mobileNoObj: MobileNoObj): Promise<void>;
 }

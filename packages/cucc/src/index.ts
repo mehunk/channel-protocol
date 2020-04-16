@@ -1,7 +1,7 @@
 import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
 
 import config from './config';
-import { Status, ChannelProtocol, Options } from './typings';
+import { Status, ChannelProtocol, Options, MobileNoObj } from './typings';
 
 const statusMap = {
   [SDKStatus.TestReady]: Status.TestReady,
@@ -37,36 +37,36 @@ export class CuccChannelProtocol implements ChannelProtocol {
     this.client = new CuccIotClient(this.options, this.customOptions);
   }
 
-  public async getStatus(iccid: string): Promise<Status> {
-    const res = await this.client.getDetail(iccid);
+  public async getStatus(mobileNoObj: MobileNoObj): Promise<Status> {
+    const res = await this.client.getDetail(mobileNoObj.iccid);
     return statusMap[res.status];
   }
 
-  public async getUsage(iccid: string): Promise<number> {
-    const res = await this.client.getUsage(iccid);
+  public async getUsage(mobileNoObj: MobileNoObj): Promise<number> {
+    const res = await this.client.getUsage(mobileNoObj.iccid);
     return Math.ceil(res.ctdDataUsage  / 1024); // bytes to KB
   }
 
-  public async activate(iccid: string): Promise<void> {
-    await this.client.setDetail(iccid, {
+  public async activate(mobileNoObj: MobileNoObj): Promise<void> {
+    await this.client.setDetail(mobileNoObj.iccid, {
       status: SDKStatus.Activated
     });
   }
 
-  public async deactivate(iccid: string): Promise<void> {
-    await this.client.setDetail(iccid, {
+  public async deactivate(mobileNoObj: MobileNoObj): Promise<void> {
+    await this.client.setDetail(mobileNoObj.iccid, {
       status: SDKStatus.Deactivated
     });
   }
 
-  public async reactivate(iccid: string): Promise<void> {
-    await this.client.setDetail(iccid, {
+  public async reactivate(mobileNoObj: MobileNoObj): Promise<void> {
+    await this.client.setDetail(mobileNoObj.iccid, {
       status: SDKStatus.Activated
     });
   }
 
-  public async getRealNameStatus(iccid: string): Promise<boolean> {
-    const res = await this.client.getRealNameStatus(iccid);
+  public async getRealNameStatus(mobileNoObj: MobileNoObj): Promise<boolean> {
+    const res = await this.client.getRealNameStatus(mobileNoObj.iccid);
     if (res.rspcode === '0001') {
       return true
     } else if (res.rspcode === '0000') {

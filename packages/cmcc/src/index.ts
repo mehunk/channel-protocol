@@ -7,7 +7,7 @@ import {
   MobileNoType,
   OperationType,
   Options,
-  Status as SDKStatus
+  Status as SDKStatus,
 } from '@china-carrier-iot-sdk/cmcc';
 
 import {
@@ -17,7 +17,8 @@ import {
   GetCurrentPositionWgs84Response,
   GetLastPositionCityCodeResponse,
   GetLastPositionWgs84Response,
-  Status
+  Status,
+  MobileNoObj
 } from './typings';
 import config from './config';
 
@@ -48,49 +49,49 @@ class CmccChannelProtocol implements ChannelProtocol {
     });
   }
 
-  public async getStatus(iccid: string): Promise<Status> {
-    const res = await this.client.getStatus(MobileNoType.iccid, iccid);
+  public async getStatus(mobileNoObj: MobileNoObj): Promise<Status> {
+    const res = await this.client.getStatus(MobileNoType.iccid, mobileNoObj.iccid);
     return statusMap[res.cardStatus];
   }
 
-  public async getUsage(iccid: string): Promise<number> {
-    const res = await this.client.getUsage(MobileNoType.iccid, iccid);
+  public async getUsage(mobileNoObj: MobileNoObj): Promise<number> {
+    const res = await this.client.getUsage(MobileNoType.iccid, mobileNoObj.iccid);
     return Math.ceil(+res.dataAmount); // dataAmount 属性可能是小数，目前协议只要整数
   }
 
-  public async activate(iccid: string): Promise<void> {
+  public async activate(mobileNoObj: MobileNoObj): Promise<void> {
     // 如果距离上次调用还没有超过 30 分钟，则直接返回错误
-    await this.checkOperationRequestRate(iccid);
-    await this.client.setStatus(MobileNoType.iccid, iccid, OperationType.Inventory2Activated);
+    // await this.checkOperationRequestRate(mobileNoObj);
+    await this.client.setStatus(MobileNoType.iccid, mobileNoObj.iccid, OperationType.Inventory2Activated);
   }
 
-  public async deactivate(iccid: string): Promise<void> {
+  public async deactivate(mobileNoObj: MobileNoObj): Promise<void> {
     // 如果距离上次调用还没有超过 30 分钟，则直接返回错误
-    await this.checkOperationRequestRate(iccid);
-    await this.client.setStatus(MobileNoType.iccid, iccid, OperationType.Activated2Deactivated);
+    // await this.checkOperationRequestRate(mobileNoObj);
+    await this.client.setStatus(MobileNoType.iccid, mobileNoObj.iccid, OperationType.Activated2Deactivated);
   }
 
-  public async reactivate(iccid: string): Promise<void> {
+  public async reactivate(mobileNoObj: MobileNoObj): Promise<void> {
     // 如果距离上次调用还没有超过 30 分钟，则直接返回错误
-    await this.checkOperationRequestRate(iccid);
-    await this.client.setStatus(MobileNoType.iccid, iccid, OperationType.Deactivated2Activated);
+    // await this.checkOperationRequestRate(mobileNoObj);
+    await this.client.setStatus(MobileNoType.iccid, mobileNoObj.iccid, OperationType.Deactivated2Activated);
   }
 
   /**
    * 检查操作请求调用频率
    *
-   * @param iccid - ICCID
+   * @param mobileNoObj - 设备号码对象
    */
-  private async checkOperationRequestRate(iccid: string): Promise<void> {
+  private async checkOperationRequestRate(mobileNoObj: MobileNoObj): Promise<void> {
     try {
-      await this.operationRateLimiter.consume(iccid);
+      await this.operationRateLimiter.consume(mobileNoObj.iccid);
     } catch (e) {
       throw new Error('30 分钟之内不允许再次调用改变生命周期接口！');
     }
   }
 
-  public async getStatusChangeHistory(iccid: string): Promise<GetStatusChangeHistoryResponse> {
-    const res = await this.client.getStatusChangeHistory(MobileNoType.iccid, iccid);
+  public async getStatusChangeHistory(mobileNoObj: MobileNoObj): Promise<GetStatusChangeHistoryResponse> {
+    const res = await this.client.getStatusChangeHistory(MobileNoType.iccid, mobileNoObj.iccid);
     return res.changeHistoryList.map(item => ({
       time: item.changeDate,
       oldStatus: statusMap[item.descStatus],
@@ -98,31 +99,31 @@ class CmccChannelProtocol implements ChannelProtocol {
     }));
   }
 
-  public async getCurrentPositionCityCode(iccid: string): Promise<GetCurrentPositionCityCodeResponse> {
-    const res = await this.client.getCurrentPositionCityCode(MobileNoType.iccid, iccid);
+  public async getCurrentPositionCityCode(mobileNoObj: MobileNoObj): Promise<GetCurrentPositionCityCodeResponse> {
+    const res = await this.client.getCurrentPositionCityCode(MobileNoType.iccid, mobileNoObj.iccid);
     return {
       cityCode: res.cityCode
     };
   }
 
-  public async getCurrentPositionWgs84(iccid: string): Promise<GetCurrentPositionWgs84Response> {
-    const res = await this.client.getCurrentPositionWgs84(MobileNoType.iccid, iccid);
+  public async getCurrentPositionWgs84(mobileNoObj: MobileNoObj): Promise<GetCurrentPositionWgs84Response> {
+    const res = await this.client.getCurrentPositionWgs84(MobileNoType.iccid, mobileNoObj.iccid);
     return {
       longitude: res.lon,
       latitude: res.lat
     };
   }
 
-  public async getLastPositionCityCode(iccid: string): Promise<GetLastPositionCityCodeResponse> {
-    const res = await this.client.getLastPositionCityCode(MobileNoType.iccid, iccid);
+  public async getLastPositionCityCode(mobileNoObj: MobileNoObj): Promise<GetLastPositionCityCodeResponse> {
+    const res = await this.client.getLastPositionCityCode(MobileNoType.iccid, mobileNoObj.iccid);
     return {
       time: res.onLineTime,
       cityCode: res.cityCode
     };
   }
 
-  public async getLastPositionWgs84(iccid: string): Promise<GetLastPositionWgs84Response> {
-    const res = await this.client.getLastPositionWgs84(MobileNoType.iccid, iccid);
+  public async getLastPositionWgs84(mobileNoObj: MobileNoObj): Promise<GetLastPositionWgs84Response> {
+    const res = await this.client.getLastPositionWgs84(MobileNoType.iccid, mobileNoObj.iccid);
     return {
       time: res.lastTime,
       longitude: res.lastLon,

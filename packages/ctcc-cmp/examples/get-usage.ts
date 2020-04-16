@@ -1,9 +1,11 @@
 import { ChannelProtocol } from '../src';
 import { options, mobileNoObj, customOptions } from './sample';
 
-const cuccChannelProtocal = new ChannelProtocol(options, customOptions);
+const ctccCmpChannelProtocol = new ChannelProtocol(
+  options,
+  customOptions
+);
 
-cuccChannelProtocal
-  .getStatus(mobileNoObj)
+ctccCmpChannelProtocol.getUsage(mobileNoObj)
   .then(res => console.log(res))
   .catch(err => console.error(err));

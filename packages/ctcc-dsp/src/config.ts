@@ -1,7 +1,7 @@
 export default {
-  name: '中国电信物联网基地',
+  name: '中国电信物联网基地-DSP',
   carrier: '电信',
-  alias: 'CtccChannelProtocol',
+  alias: 'CtccDspChannelProtocol',
   params: [
     {
       name: 'SOAP 用户名',

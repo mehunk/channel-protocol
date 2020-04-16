@@ -1,7 +1,7 @@
 {
   "name": "@channel-protocol/cmcc",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "lib/index.js",
   "author": "Wei Qiang<mehunk@163.com>",
   "repository": {
@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@china-carrier-iot-sdk/cmcc": "^1.1.0",
-    "tslib": "^1.10.0"
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "ioredis": "^4.14.1",
-    "rimraf": "^3.0.0"
+    "ioredis": "^4.16.2",
+    "rimraf": "^3.0.2"
   }
 }

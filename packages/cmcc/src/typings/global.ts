@@ -7,29 +7,34 @@ import {
   GetLastPositionWgs84Response
 } from './response';
 
+export interface MobileNoObj {
+  iccid: string;
+  msisdn: string;
+}
+
 export interface ChannelProtocol {
   // 查询设备状态
-  getStatus (iccid: string): Promise<Status>;
+  getStatus (mobileNoObj: MobileNoObj): Promise<Status>;
 
   // 查询设备流量用量
-  getUsage (iccid: string): Promise<number>;
+  getUsage (mobileNoObj: MobileNoObj): Promise<number>;
 
   // 激活设备
-  activate (iccid: string): Promise<void>;
+  activate (mobileNoObj: MobileNoObj): Promise<void>;
 
   // 设备停机
-  deactivate (iccid: string): Promise<void>;
+  deactivate (mobileNoObj: MobileNoObj): Promise<void>;
 
   // 重新激活设备
-  reactivate (iccid: string): Promise<void>;
+  reactivate (mobileNoObj: MobileNoObj): Promise<void>;
 
-  getStatusChangeHistory (iccid: string): Promise<GetStatusChangeHistoryResponse>;
+  getStatusChangeHistory (mobileNoObj: MobileNoObj): Promise<GetStatusChangeHistoryResponse>;
 
-  getCurrentPositionCityCode (iccid: string): Promise<GetCurrentPositionCityCodeResponse>;
+  getCurrentPositionCityCode (mobileNoObj: MobileNoObj): Promise<GetCurrentPositionCityCodeResponse>;
 
-  getCurrentPositionWgs84 (iccid: string): Promise<GetCurrentPositionWgs84Response>;
+  getCurrentPositionWgs84 (mobileNoObj: MobileNoObj): Promise<GetCurrentPositionWgs84Response>;
 
-  getLastPositionCityCode (iccid: string): Promise<GetLastPositionCityCodeResponse>;
+  getLastPositionCityCode (mobileNoObj: MobileNoObj): Promise<GetLastPositionCityCodeResponse>;
 
-  getLastPositionWgs84 (iccid: string): Promise<GetLastPositionWgs84Response>;
+  getLastPositionWgs84 (mobileNoObj: MobileNoObj): Promise<GetLastPositionWgs84Response>;
 }
