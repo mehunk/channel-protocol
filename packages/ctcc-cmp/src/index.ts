@@ -59,6 +59,10 @@ class CtccCmpChannelProtocol implements ChannelProtocol {
   public async reactivate(mobileNoObj: MobileNoObj): Promise<void> {
     await this.client.setStatus(mobileNoObj.msisdn, OperationType.Deactivated2Activated);
   }
+
+  public getRealNameStatus(mobileNoObj: MobileNoObj): Promise<boolean> {
+    return this.client.getRealNameStatus(mobileNoObj.msisdn);
+  }
 }
 
 export {
