@@ -1,6 +1,6 @@
 import * as EventEmitter from 'events';
 
-import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
+import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus, EventParams } from '@china-carrier-iot-sdk/cucc';
 
 import config from './config';
 import { Status, ChannelProtocol, Options, MobileNoObj } from './typings';
@@ -81,6 +81,14 @@ export class CuccChannelProtocol extends EventEmitter implements ChannelProtocol
     } else {
       throw new Error(`查询实名状态失败！结果码：${res.rspcode}，结果说明：${res.rspdesc}！`);
     }
+  }
+
+  public async handleEvent(eventParams: EventParams): Promise<void> {
+    return this.client.handleEvent(eventParams)
+  }
+
+  static getMobileNoTypeFromEvent(eventParams: EventParams): Promise<MobileNoObj> {
+    return CuccIotClient.getMobileNoTypeFromEvent(eventParams);
   }
 }
 
