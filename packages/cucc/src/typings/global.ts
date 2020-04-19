@@ -1,3 +1,5 @@
+import { EventParams, ImeiChangeEventData } from '@china-carrier-iot-sdk/cucc';
+
 export enum Status {
   Activated = 'activated', // 已激活。已激活状态的设备可以建立数据连接，而且将其视为计费。
   ActivationReady = 'activationReady', // 可激活。可激活状态的设备可以建立数据连接，但通常不考虑对其进行计费。当处于可激活状态的设备进行数据连接或发送短信时，Control Center 就会自动将其状态更改为已激活，从而开始对设备计费。
@@ -31,4 +33,6 @@ export interface ChannelProtocol {
 
   // 重新激活设备
   reactivate (mobileNoObj: MobileNoObj): Promise<void>;
+
+  on: (event: 'cucc-imeiChange', listener: (imeiChangeEventData: ImeiChangeEventData, eventParams: EventParams) => void) => this;
 }

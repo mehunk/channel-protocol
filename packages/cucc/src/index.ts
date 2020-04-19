@@ -1,3 +1,5 @@
+import * as EventEmitter from 'events';
+
 import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus } from '@china-carrier-iot-sdk/cucc';
 
 import config from './config';
@@ -14,7 +16,7 @@ const statusMap = {
   [SDKStatus.Purged]: Status.Purged
 };
 
-export class CuccChannelProtocol implements ChannelProtocol {
+export class CuccChannelProtocol extends EventEmitter implements ChannelProtocol {
   private readonly options: SDKOptions;
   private readonly client: CuccIotClient;
 
@@ -22,6 +24,7 @@ export class CuccChannelProtocol implements ChannelProtocol {
     options: Options,
     private customOptions: CustomOptions = {}
   ) {
+    super();
     this.options = {
       jasper: {
         username: options.jasperUsername,
@@ -35,6 +38,10 @@ export class CuccChannelProtocol implements ChannelProtocol {
       }
     };
     this.client = new CuccIotClient(this.options, this.customOptions);
+
+    this.client.on('cucc-imeiChange', ((imeiChangeEventData, eventParams) => {
+      this.emit('cucc-imeiChange', imeiChangeEventData, eventParams);
+    }))
   }
 
   public async getStatus(mobileNoObj: MobileNoObj): Promise<Status> {
