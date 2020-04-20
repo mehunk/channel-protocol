@@ -1,6 +1,6 @@
 import * as EventEmitter from 'events';
 
-import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus, EventParams } from '@china-carrier-iot-sdk/cucc';
+import { CuccIotClient, Options as SDKOptions, CustomOptions, Status as SDKStatus, EventParams, EventResponse } from '@china-carrier-iot-sdk/cucc';
 
 import config from './config';
 import { Status, ChannelProtocol, Options, MobileNoObj } from './typings';
@@ -38,10 +38,6 @@ export class CuccChannelProtocol extends EventEmitter implements ChannelProtocol
       }
     };
     this.client = new CuccIotClient(this.options, this.customOptions);
-
-    this.client.on('cucc-imeiChange', ((imeiChangeEventData, eventParams) => {
-      this.emit('cucc-imeiChange', imeiChangeEventData, eventParams);
-    }))
   }
 
   public async getStatus(mobileNoObj: MobileNoObj): Promise<Status> {
@@ -83,8 +79,8 @@ export class CuccChannelProtocol extends EventEmitter implements ChannelProtocol
     }
   }
 
-  public async handleEvent(eventParams: EventParams): Promise<void> {
-    return this.client.handleEvent(eventParams)
+  public handleEvent(eventParams: EventParams): Promise<EventResponse> {
+    return this.client.handleEvent(eventParams);
   }
 
   static getMobileNoTypeFromEvent(eventParams: EventParams): Promise<MobileNoObj> {
