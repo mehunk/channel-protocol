@@ -36,5 +36,6 @@ export default {
       default: 'https://gwapi.10646.cn/api'
     }
   ],
+  billingCycleStartDay: 27,
   supportSpeedLimit: false
 };

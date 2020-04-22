@@ -20,5 +20,6 @@ export default {
       default: 'https://api.iot.10086.cn/v5/ec'
     }
   ],
+  billingCycleStartDay: 1,
   supportSpeedLimit: false
 };

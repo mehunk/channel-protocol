@@ -36,5 +36,6 @@ export default {
       default: 'https://si.global.ct10649.com/api/dcpsiapi'
     }
   ],
+  billingCycleStartDay: 1,
   supportSpeedLimit: false
 };
