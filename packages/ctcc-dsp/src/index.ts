@@ -73,6 +73,11 @@ class CtccDspChannelProtocol implements ChannelProtocol {
   public async reactivate(mobileNoObj: MobileNoObj): Promise<void> {
     await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
   }
+
+  public async getRealNameStatus(mobileNoObj: MobileNoObj): Promise<boolean> {
+    const res = await this.client.getRealNameStatus(RestClientMobileNoType.iccid, mobileNoObj.iccid);
+    return res.isAuth;
+  }
 }
 
 export {

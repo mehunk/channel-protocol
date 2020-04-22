@@ -31,4 +31,7 @@ export interface ChannelProtocol {
 
   // 重新激活设备
   reactivate (mobileNoObj: MobileNoObj): Promise<void>;
+
+  // 获取运营商实名状态
+  getRealNameStatus (mobileNoObj: MobileNoObj): Promise<boolean>;
 }
