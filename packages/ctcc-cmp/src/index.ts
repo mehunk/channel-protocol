@@ -10,7 +10,7 @@ import { Status, ChannelProtocol, Options, MobileNoObj } from './typings';
 import config from './config';
 
 const statusMap = {
-  [SDKStatus.TestReady]: Status.TestReady,
+  [SDKStatus.TestReady]: Status.Activated, // 测试期直接映射到已激活
   [SDKStatus.Inventory]: Status.Inventory,
   [SDKStatus.ActivationReady]: Status.ActivationReady,
   [SDKStatus.Deactivated]: Status.Deactivated,
