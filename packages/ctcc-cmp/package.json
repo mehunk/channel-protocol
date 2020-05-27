@@ -1,7 +1,7 @@
 {
   "name": "@channel-protocol/ctcc-cmp",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "lib/index.js",
   "author": "Wei Qiang<mehunk@163.com>",
   "repository": {
@@ -15,7 +15,7 @@
     "build": "npm run clean && tsc"
   },
   "dependencies": {
-    "@china-carrier-iot-sdk/ctcc-cmp": "^1.0.0",
+    "@china-carrier-iot-sdk/ctcc-cmp": "^2.0.1",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
