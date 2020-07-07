@@ -8,6 +8,8 @@ import {
   OperationType,
   Options,
   Status as SDKStatus,
+  SetGroupMemberOperationType,
+  SetGroupMemberEffectType
 } from '@china-carrier-iot-sdk/cmcc';
 
 import {
@@ -130,9 +132,20 @@ class CmccChannelProtocol implements ChannelProtocol {
       latitude: res.lastLat
     };
   }
+
+  public setGroupMember(
+    mobileNoObj: MobileNoObj,
+    groupId: string,
+    operationType: SetGroupMemberOperationType,
+    effectType?: SetGroupMemberEffectType
+  ): Promise<void> {
+    return this.client.setGroupMember(mobileNoObj.msisdn, groupId, operationType, effectType);
+  }
 }
 
 export {
   CmccChannelProtocol as ChannelProtocol,
-  config
+  config,
+  SetGroupMemberOperationType,
+  SetGroupMemberEffectType
 };
