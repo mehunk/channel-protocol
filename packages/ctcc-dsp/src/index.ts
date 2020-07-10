@@ -4,10 +4,11 @@ import {
   Options as SDKOptions,
   CustomOptions,
   RestClientMobileNoType,
-  SoapClientMobileNoType,
+  GlobalSoapClientMobileNoType,
   Status as SDKStatus,
   GetUsageType,
-  OperationType
+  OperationType,
+  DetailGroup
 } from '@china-carrier-iot-sdk/ctcc-dsp';
 
 import { Status, ChannelProtocol, Options, MobileNoObj } from './typings';
@@ -44,7 +45,7 @@ class CtccDspChannelProtocol implements ChannelProtocol {
   }
 
   public async getStatus(mobileNoObj: MobileNoObj): Promise<Status> {
-    const res = await this.client.getDetail(SoapClientMobileNoType.iccid, mobileNoObj.iccid);
+    const res = await this.client.getDetail(GlobalSoapClientMobileNoType.iccid, mobileNoObj.iccid);
     return statusMap[res.simSubscriptionStatus];
   }
 
@@ -63,20 +64,35 @@ class CtccDspChannelProtocol implements ChannelProtocol {
   }
 
   public async activate(mobileNoObj: MobileNoObj): Promise<void> {
-    await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
+    await this.client.setStatus(GlobalSoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
   }
 
   public async deactivate(mobileNoObj: MobileNoObj): Promise<void> {
-    await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Pause);
+    await this.client.setStatus(GlobalSoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Pause);
   }
 
   public async reactivate(mobileNoObj: MobileNoObj): Promise<void> {
-    await this.client.setStatus(SoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
+    await this.client.setStatus(GlobalSoapClientMobileNoType.iccid, mobileNoObj.iccid, OperationType.Activate);
   }
 
   public async getRealNameStatus(mobileNoObj: MobileNoObj): Promise<boolean> {
     const res = await this.client.getRealNameStatus(RestClientMobileNoType.iccid, mobileNoObj.iccid);
     return res.isAuth;
+  }
+
+  public async getDeviceSeparateStatus(mobileNoObj: MobileNoObj): Promise<string> {
+    const res = await this.client.getRestDetail(GlobalSoapClientMobileNoType.iccid, mobileNoObj.iccid, [ DetailGroup.lockStateInfo ]);
+    if (res.lockState === 'UNLOCKED') {
+      return 'notSeparated';
+    } else if (res.lockState === 'LOCKED') {
+      return 'separated';
+    } else {
+      return 'unknown';
+    }
+  }
+
+  public async unbindImei(mobileNoObj: MobileNoObj, customerNo: string, customerName: string, customerPhone: string): Promise<void> {
+    await this.client.unbindImei(mobileNoObj.iccid, customerNo, customerName, customerPhone);
   }
 }
 
