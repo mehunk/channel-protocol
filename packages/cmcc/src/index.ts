@@ -141,6 +141,10 @@ class CmccChannelProtocol implements ChannelProtocol {
   ): Promise<void> {
     return this.client.setGroupMember(mobileNoObj.msisdn, groupId, operationType, effectType);
   }
+
+  public getImei(mobileNoObj: MobileNoObj): Promise<string> {
+    return this.client.getImei(MobileNoType.iccid, mobileNoObj.iccid);
+  }
 }
 
 export {
